@@ -13,19 +13,23 @@ public class TracerAIInput : HeroInput {
 	NavMeshAgent agent;
 	NavMeshPath path;
 	float pathfindTimer;
+	RigidbodyFirstPersonController fpsController;
 
 	private float pathfindTime = .5f;
 	int cornerIndex;
+	Vector3 lastGoal;
 
 	void Start()
 	{
 		mousePosIsFinal = true;
-		GetComponentInChildren<RigidbodyFirstPersonController>().mouseLook.XSensitivity = 1;
-		GetComponentInChildren<RigidbodyFirstPersonController>().mouseLook.YSensitivity = 1;
+		fpsController = GetComponentInChildren<RigidbodyFirstPersonController>();
+		fpsController.mouseLook.XSensitivity = 1;
+		fpsController.mouseLook.YSensitivity = 1;
 		hero = GetComponent<HeroBase>();
 
 		agent = GetComponent<NavMeshAgent>();
 		path = new NavMeshPath();
+		lastGoal = transform.position;
 		Path(target.transform.position);
 		agent.enabled = false;
 	}
@@ -38,11 +42,20 @@ public class TracerAIInput : HeroInput {
 		cornerIndex = 0;
 	}
 
+	private float distToGround = .94f;
+
 	private void MoveTowardPoint(Vector3 goal)
 	{
 		HeroKey hk = null;
 		keys.TryGetValue(KeyCode.W, out hk);
 		hk.down = true;
+		keys.TryGetValue(KeyCode.Space, out hk);
+		if (goal.y - transform.position.y + distToGround > .7f && Vector3.Distance(transform.position, goal) < 4f && target.transform.position != goal)
+		{
+			hk.justPressed = true;
+		}
+		else
+			hk.justPressed = false;
 		Debug.DrawLine(transform.position, goal, Color.red);
 	}
 	
@@ -50,7 +63,7 @@ public class TracerAIInput : HeroInput {
 	{
 		Vector3 goal = transform.position;
 		pathfindTimer += Time.deltaTime;
-		if(cornerIndex >= path.corners.Length || pathfindTimer > pathfindTime)
+		if((cornerIndex >= path.corners.Length || pathfindTimer > pathfindTime) && fpsController.Grounded)
 			Path(target.transform.position);
 		if (pathfindTimer > pathfindTime)
 			pathfindTimer = 0;
@@ -58,8 +71,10 @@ public class TracerAIInput : HeroInput {
 			goal = path.corners[cornerIndex];
 		Debug.DrawLine(target.transform.position, transform.position, Color.green);
 
-		if(Vector3.Distance(transform.position, goal) < 1.6f && cornerIndex < path.corners.Length)
+		if (Vector3.Distance(transform.position, goal) < 1.6f && cornerIndex < path.corners.Length)
+		{
 			cornerIndex++;
+		}
 		lookingAt = goal;
 
 		MoveTowardPoint(goal);
@@ -71,14 +86,15 @@ public class TracerAIInput : HeroInput {
 		Vector3 relativePos = lookingAt - cam.transform.position;
 		Quaternion rotation = Quaternion.LookRotation(relativePos);
 		Quaternion newRot = Quaternion.Slerp(cam.transform.rotation, rotation, .07f);
+
 		mouseX = -newRot.eulerAngles.x;
 		mouseY = newRot.eulerAngles.y;
 
-		/*foreach(KeyCode k in keys.Keys)
+		foreach(KeyCode k in keys.Keys)
 		{
 			HeroKey hk = null;
 			keys.TryGetValue(k, out hk);
-			if (k == KeyCode.R || k == KeyCode.W)
+			if (k == KeyCode.R || k == KeyCode.W || k == KeyCode.Space || k == KeyCode.S)
 				continue;
 			bool press = Random.Range(0, 100) < 5;
 			bool release = Random.Range(0, 100) < 5;
@@ -90,6 +106,6 @@ public class TracerAIInput : HeroInput {
 			hk.justReleased = release;
 			if (release)
 				hk.down = false;
-		}*/
+		}
 	}
 }

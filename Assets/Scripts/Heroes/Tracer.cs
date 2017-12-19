@@ -15,7 +15,7 @@ public class Tracer : HeroBase {
 	private float blinkTimer, blinkTime = 3f;
 	private float rewindTimer, rewindTime = 12f;
 	private float ultTimer, ultTime = 5f;
-	private float rewindInterpolateTimer, rewindInterpolateTime = .02f;
+	private float rewindInterpolateTimer, rewindInterpolateTime = .005f;
 	private int rewindInterpolateIndex;
 
 	private float shootTimer, shootTime = 1 / 20f;
@@ -27,9 +27,9 @@ public class Tracer : HeroBase {
 
 	public GameObject bulletDustPrefab;
 
-	private Vector3[] positions = new Vector3[30];
-	private Quaternion[] rotations = new Quaternion[30];
-	private float savePositionTimer, savePositionTime = .1f;
+	private Vector3[] positions = new Vector3[30 * 3];
+	private Quaternion[] rotations = new Quaternion[30 * 3];
+	private float savePositionTimer, savePositionTime = .04f;
 
 	private Vector3 smoothVelocity = Vector3.zero;
 	private float smoothTime = .2f;
