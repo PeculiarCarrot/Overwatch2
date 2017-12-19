@@ -26,6 +26,8 @@ public class Tracer : HeroBase {
 	private bool rewinding;
 
 	public GameObject bulletDustPrefab;
+	public GameObject recallPrefab;
+	public GameObject bloodPrefab;
 
 	private Vector3[] positions = new Vector3[30 * 3];
 	private Quaternion[] rotations = new Quaternion[30 * 3];
@@ -36,7 +38,6 @@ public class Tracer : HeroBase {
 	private float rotSmooth = 5;
 
 	private Collider collider;
-	private Rigidbody body;
 	
 	void Start () {
 		blinkCharges = maxBlinkCharges;
@@ -46,7 +47,6 @@ public class Tracer : HeroBase {
 		SetMaxAmmo(40);
 		guns = GetComponent<TracerGuns>();
 		collider = GetComponent<Collider>();
-		body = GetComponent<Rigidbody>();
 		for (int i = 0; i < positions.Length; i++)
 			positions[i] = transform.position;
 		for (int i = 0; i < rotations.Length; i++)
@@ -70,7 +70,7 @@ public class Tracer : HeroBase {
 
 	public void Ult()
 	{
-		Instantiate(pulseBombPrefab, camera.transform.position + camera.transform.forward * .5f, camera.transform.rotation);
+		Instantiate(pulseBombPrefab, camera.transform.position + camera.transform.forward * .75f, camera.transform.rotation);
 		ultTimer = 0;
 	}
 	
@@ -143,6 +143,8 @@ public class Tracer : HeroBase {
 			firstPersonController.SetCanTurn(false);
 			body.isKinematic = true;
 			collider.enabled = false;
+			Instantiate(recallPrefab, transform.position, Quaternion.identity);
+
 			if (rewindInterpolateTimer < rewindInterpolateTime)
 				rewindInterpolateTimer += Time.deltaTime;
 			if(rewindInterpolateTimer >= rewindInterpolateTime)
@@ -163,6 +165,8 @@ public class Tracer : HeroBase {
 				{
 					rewinding = false;
 					rewindTimer = 0;
+					foreach (Renderer r in GetComponentsInChildren<Renderer>())
+						r.enabled = true;
 				}
 			}
 		}
@@ -173,6 +177,8 @@ public class Tracer : HeroBase {
 		rewinding = true;
 		rewindInterpolateTimer = 0;
 		rewindInterpolateIndex = positions.Length - 1;
+		foreach (Renderer r in GetComponentsInChildren<Renderer>())
+			r.enabled = false;
 	}
 
 	void OnGUI()
@@ -245,7 +251,7 @@ public class Tracer : HeroBase {
 			{
 				Debug.DrawLine(origin, hit.point, i == 0 ? Color.red : Color.blue);
 				point = hit.point;
-				Instantiate(bulletDustPrefab, hit.point, Quaternion.identity);
+				Instantiate(hit.collider.gameObject.layer == LayerMask.NameToLayer("Player") && hit.collider.GetComponent<HeroBase>().team != team ? bloodPrefab : bulletDustPrefab, hit.point, Quaternion.identity);
 				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("PhysicsObject"))
 				{
 					hit.collider.gameObject.GetComponent<Rigidbody>().AddForceAtPosition(direction * 5, point);

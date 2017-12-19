@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class HeroInput : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public abstract class HeroInput : MonoBehaviour {
 	protected Dictionary<KeyCode, HeroKey> keys = new Dictionary<KeyCode, HeroKey>();
 
 	void Awake () {
+		GetComponent<NavMeshAgent>().enabled = false;
 		keys.Add(KeyCode.E, new HeroKey());
 		keys.Add(KeyCode.Q, new HeroKey());
 		keys.Add(KeyCode.Mouse0, new HeroKey());

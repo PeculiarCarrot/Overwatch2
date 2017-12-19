@@ -30,7 +30,6 @@ public class TracerAIInput : HeroInput {
 		agent = GetComponent<NavMeshAgent>();
 		path = new NavMeshPath();
 		lastGoal = transform.position;
-		Path(target.transform.position);
 		agent.enabled = false;
 	}
 
@@ -58,9 +57,30 @@ public class TracerAIInput : HeroInput {
 			hk.justPressed = false;
 		Debug.DrawLine(transform.position, goal, Color.red);
 	}
+		
+	public GameObject GetNearestEnemy()
+	{
+		HeroBase[] heroes = FindObjectsOfType<HeroBase>();
+		float shortest = 0;
+		HeroBase closest = null;
+		foreach(HeroBase b in heroes)
+		{
+			if (b.team == hero.team)
+				continue;
+			float dist = Vector3.Distance(b.transform.position, hero.transform.position);
+			if(dist < shortest || closest == null)
+			{
+				shortest = dist;
+				closest = b;
+			}
+		}
+
+		return closest.gameObject;
+	}
 	
 	protected override void UpdateInput ()
 	{
+		target = GetNearestEnemy();
 		Vector3 goal = transform.position;
 		pathfindTimer += Time.deltaTime;
 		if((cornerIndex >= path.corners.Length || pathfindTimer > pathfindTime) && fpsController.Grounded)

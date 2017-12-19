@@ -21,12 +21,9 @@ public class Reinhardt : HeroBase {
 	private bool charging;
 
 	private float firestrikeTimer, firestrikeTime = 6f;
-
-	private Rigidbody body;
 	
 	void Start () {
 		shield = shieldObject.GetComponent<ReinhardtShield>();
-		body = GetComponent<Rigidbody>();
 		firestrikeTimer = firestrikeTime;
 		hammer = hammerObject.GetComponent<ReinhardtHammer>();
 	}
@@ -184,8 +181,9 @@ public class Reinhardt : HeroBase {
 		}
 	}
 
-	void FixedUpdate()
+	public void FixedUpdate()
 	{
+		base.FixedUpdate();
 		if(charging)
 		{
 			Vector3 newPos = transform.position;
