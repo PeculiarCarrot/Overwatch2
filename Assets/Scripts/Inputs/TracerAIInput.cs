@@ -12,6 +12,9 @@ public class TracerAIInput : HeroInput {
 	HeroBase hero;
 	NavMeshAgent agent;
 	NavMeshPath path;
+	float pathfindTimer;
+
+	private float pathfindTime = .5f;
 	int cornerIndex;
 
 	void Start()
@@ -24,11 +27,14 @@ public class TracerAIInput : HeroInput {
 		agent = GetComponent<NavMeshAgent>();
 		path = new NavMeshPath();
 		Path(target.transform.position);
+		agent.enabled = false;
 	}
 
 	private void Path(Vector3 pos)
 	{
+		agent.enabled = true;
 		agent.CalculatePath(target.transform.position, path);
+		agent.enabled = false;
 		cornerIndex = 0;
 	}
 
@@ -38,16 +44,19 @@ public class TracerAIInput : HeroInput {
 		keys.TryGetValue(KeyCode.W, out hk);
 		hk.down = true;
 		Debug.DrawLine(transform.position, goal, Color.red);
-		Debug.DrawLine(target.transform.position, goal, Color.green);
 	}
 	
 	protected override void UpdateInput ()
 	{
 		Vector3 goal = transform.position;
-		if(cornerIndex >= path.corners.Length)
+		pathfindTimer += Time.deltaTime;
+		if(cornerIndex >= path.corners.Length || pathfindTimer > pathfindTime)
 			Path(target.transform.position);
+		if (pathfindTimer > pathfindTime)
+			pathfindTimer = 0;
 		if(cornerIndex < path.corners.Length)
 			goal = path.corners[cornerIndex];
+		Debug.DrawLine(target.transform.position, transform.position, Color.green);
 
 		if(Vector3.Distance(transform.position, goal) < 1.6f && cornerIndex < path.corners.Length)
 			cornerIndex++;
@@ -69,7 +78,7 @@ public class TracerAIInput : HeroInput {
 		{
 			HeroKey hk = null;
 			keys.TryGetValue(k, out hk);
-			if (k == KeyCode.R)
+			if (k == KeyCode.R || k == KeyCode.W)
 				continue;
 			bool press = Random.Range(0, 100) < 5;
 			bool release = Random.Range(0, 100) < 5;

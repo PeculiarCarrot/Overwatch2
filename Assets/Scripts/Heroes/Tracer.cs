@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
 [RequireComponent(typeof(TracerGuns))]
+[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Rigidbody))]
 public class Tracer : HeroBase {
 
 	public RigidbodyFirstPersonController firstPersonController;
@@ -32,6 +34,9 @@ public class Tracer : HeroBase {
 	private Vector3 smoothVelocity = Vector3.zero;
 	private float smoothTime = .2f;
 	private float rotSmooth = 5;
+
+	private Collider collider;
+	private Rigidbody body;
 	
 	void Start () {
 		blinkCharges = maxBlinkCharges;
@@ -40,6 +45,8 @@ public class Tracer : HeroBase {
 		ultTimer = ultTime;
 		SetMaxAmmo(40);
 		guns = GetComponent<TracerGuns>();
+		collider = GetComponent<Collider>();
+		body = GetComponent<Rigidbody>();
 		for (int i = 0; i < positions.Length; i++)
 			positions[i] = transform.position;
 		for (int i = 0; i < rotations.Length; i++)
@@ -93,6 +100,8 @@ public class Tracer : HeroBase {
 		if(!rewinding)
 		{
 			firstPersonController.SetCanTurn(true);
+			body.isKinematic = false;
+			collider.enabled = true;
 			if (savePositionTimer < savePositionTime)
 				savePositionTimer += Time.deltaTime;
 			else
@@ -132,6 +141,8 @@ public class Tracer : HeroBase {
 		else
 		{
 			firstPersonController.SetCanTurn(false);
+			body.isKinematic = true;
+			collider.enabled = false;
 			if (rewindInterpolateTimer < rewindInterpolateTime)
 				rewindInterpolateTimer += Time.deltaTime;
 			if(rewindInterpolateTimer >= rewindInterpolateTime)
