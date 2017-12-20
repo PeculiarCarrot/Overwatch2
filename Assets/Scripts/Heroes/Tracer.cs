@@ -37,6 +37,8 @@ public class Tracer : HeroBase {
 	private float smoothTime = .2f;
 	private float rotSmooth = 5;
 
+	public Material allyBullet, enemyBullet;
+
 	private Collider collider;
 	
 	void Start () {
@@ -143,7 +145,8 @@ public class Tracer : HeroBase {
 			firstPersonController.SetCanTurn(false);
 			body.isKinematic = true;
 			collider.enabled = false;
-			Instantiate(recallPrefab, transform.position, Quaternion.identity);
+			GameObject o = Instantiate(recallPrefab, transform.position, transform.rotation);
+			o.GetComponent<ParticleSystemRenderer>().material = team ? allyBullet : enemyBullet;
 
 			if (rewindInterpolateTimer < rewindInterpolateTime)
 				rewindInterpolateTimer += Time.deltaTime;
@@ -232,7 +235,10 @@ public class Tracer : HeroBase {
 		{
 			newPos = transform.position + dir * blinkDistance;
 		}
+		Vector3 lastPos = transform.position;
 		transform.position = newPos;
+		Vector3 speed = Vector3.Normalize(transform.position - lastPos);
+		body.velocity += speed * 4f;
 		blinkCharges--;
 	}
 
@@ -261,6 +267,7 @@ public class Tracer : HeroBase {
 			r.enabled = true;
 			r.SetPosition(0, origin);
 			r.SetPosition(1, point);
+			r.material = team ? allyBullet : enemyBullet;
 		}
 		shootTimer = 0;
 	}

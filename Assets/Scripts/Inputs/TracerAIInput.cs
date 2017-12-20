@@ -19,6 +19,8 @@ public class TracerAIInput : HeroInput {
 	int cornerIndex;
 	Vector3 lastGoal;
 
+	private float newEnemyTimer, newEnemyTime = 4f;
+
 	void Start()
 	{
 		mousePosIsFinal = true;
@@ -31,6 +33,7 @@ public class TracerAIInput : HeroInput {
 		path = new NavMeshPath();
 		lastGoal = transform.position;
 		agent.enabled = false;
+		newEnemyTimer = newEnemyTime;
 	}
 
 	private void Path(Vector3 pos)
@@ -57,7 +60,18 @@ public class TracerAIInput : HeroInput {
 			hk.justPressed = false;
 		Debug.DrawLine(transform.position, goal, Color.red);
 	}
-		
+
+	public GameObject GetRandomEnemy()
+	{
+		HeroBase[] heroes = FindObjectsOfType<HeroBase>();
+		List<HeroBase> enemies = new List<HeroBase>();
+		foreach (HeroBase b in heroes)
+			if (b.team != hero.team)
+				enemies.Add(b);
+
+		return enemies[Random.Range(0, enemies.Count)].gameObject;
+	}
+
 	public GameObject GetNearestEnemy()
 	{
 		HeroBase[] heroes = FindObjectsOfType<HeroBase>();
@@ -80,7 +94,12 @@ public class TracerAIInput : HeroInput {
 	
 	protected override void UpdateInput ()
 	{
-		target = GetNearestEnemy();
+		newEnemyTimer += Time.deltaTime;
+		if(newEnemyTimer > newEnemyTime)
+		{
+			target = GetRandomEnemy();
+			newEnemyTimer = 0;
+		}
 		Vector3 goal = transform.position;
 		pathfindTimer += Time.deltaTime;
 		if((cornerIndex >= path.corners.Length || pathfindTimer > pathfindTime) && fpsController.Grounded)

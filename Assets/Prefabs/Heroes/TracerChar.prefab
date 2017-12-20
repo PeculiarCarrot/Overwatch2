@@ -609,6 +609,8 @@ MonoBehaviour:
     type: 2}
   bloodPrefab: {fileID: 1203563143189856, guid: 6c6fd94874e39024b88183082f43645c,
     type: 2}
+  allyBullet: {fileID: 2100000, guid: 07728332696850e41963e007fe3c46cc, type: 2}
+  enemyBullet: {fileID: 2100000, guid: 9fcbfc0de4725b74b9fae7a81692a458, type: 2}
 --- !u!114 &114472612236436232
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -71,7 +71,7 @@ public class HeroBase : MonoBehaviour {
 
 	public void FixedUpdate()
 	{
-	//	if(body.velocity.y > -2)
-		//	body.velocity += new Vector3(0, -3 * Time.deltaTime, 0);
+		if(body.velocity.y > -2)
+			body.velocity += new Vector3(0, -3 * Time.deltaTime, 0);
 	}
 }

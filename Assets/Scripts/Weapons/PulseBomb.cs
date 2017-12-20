@@ -51,6 +51,7 @@ public class PulseBomb : MonoBehaviour {
 				transform.parent = other.collider.gameObject.transform;
 			rigidbody.isKinematic = true;
 			stuck = transform.parent.gameObject;
+			collider.enabled = false;
 		}
 	}
 }
