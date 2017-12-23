@@ -10,7 +10,7 @@ public class PulseBomb : MonoBehaviour {
 
 	private new Collider collider;
 	private new Rigidbody rigidbody;
-	private float impulse = 50f;
+	private float impulse = 100f;
 	private GameObject stuck;
 	private float timeUntilDetonate = 1f;
 	private float explosionForce = 40f;
@@ -20,10 +20,14 @@ public class PulseBomb : MonoBehaviour {
 		collider = GetComponent<Collider>();
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.AddForce(transform.forward * impulse);
-		rigidbody.AddForce(transform.up * (impulse / 4f));
+		rigidbody.AddForce(transform.up * (impulse / 10f));
 	}
 	
 	void Update () {
+		Vector3 v = rigidbody.velocity;
+		v.Scale(new Vector3(.99f, 1f, .99f));
+		v.y -= Time.deltaTime * 10;
+		rigidbody.velocity = v;
 		if (stuck != null)
 			timeUntilDetonate -= Time.deltaTime;
 		if (timeUntilDetonate <= 0)
@@ -33,10 +37,12 @@ public class PulseBomb : MonoBehaviour {
 	private void Explode()
 	{
 		Rigidbody[] bodies = FindObjectsOfType<Rigidbody>();
+
 		foreach(Rigidbody b in bodies)
 		{
 			b.AddExplosionForce(explosionForce, transform.position, explosionRadius, .5f);
 		}
+
 		Instantiate(pulseExplosionPrefab,transform.position, Quaternion.identity);
 		Destroy(gameObject);
 	}
@@ -45,13 +51,15 @@ public class PulseBomb : MonoBehaviour {
 	{
 		if(!stuck)
 		{
-			if(other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-				transform.parent = other.collider.gameObject.transform.root;
-			else
-				transform.parent = other.collider.gameObject.transform;
+			//Stick us to the hit object and disable physics and collisions
 			rigidbody.isKinematic = true;
-			stuck = transform.parent.gameObject;
+			rigidbody.velocity = Vector3.zero;
 			collider.enabled = false;
+			if(other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+				transform.SetParent(other.collider.gameObject.transform.root);
+			else
+				transform.SetParent(other.collider.transform);
+			stuck = transform.parent.gameObject;
 		}
 	}
 }

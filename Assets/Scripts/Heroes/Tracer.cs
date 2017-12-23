@@ -14,7 +14,7 @@ public class Tracer : HeroBase {
 	private int blinkCharges, maxBlinkCharges = 3;
 	private float blinkTimer, blinkTime = 3f;
 	private float rewindTimer, rewindTime = 12f;
-	private float ultTimer, ultTime = 5f;
+	private float ultTimer, ultTime = 1f;
 	private float rewindInterpolateTimer, rewindInterpolateTime = .005f;
 	private int rewindInterpolateIndex;
 

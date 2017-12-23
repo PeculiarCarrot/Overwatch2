@@ -140,8 +140,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				mouseLook.m_CameraTargetRot = cam.transform.localRotation;
 				mouseLook.m_CharacterTargetRot = transform.localRotation;
 			}
-            float fric = .93f;
-            m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x * fric, m_RigidBody.velocity.y * (m_IsGrounded ? fric : 1), m_RigidBody.velocity.z * fric);
+            float fric = .85f;
+			float airFric = .95f;
+			m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x * (m_IsGrounded ? fric : airFric), m_RigidBody.velocity.y * (m_IsGrounded ? fric : 1), m_RigidBody.velocity.z * (m_IsGrounded ? fric : airFric));
 
 			if (heroInput.GetKeyDown(KeyCode.Space) && !m_Jump)
             {
@@ -161,13 +162,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				Vector3 desiredMove = moveCam.transform.forward*input.y + moveCam.transform.right*input.x;
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
 
-                 desiredMove.x = desiredMove.x*movementSettings.CurrentTargetSpeed;
-                 desiredMove.z = desiredMove.z*movementSettings.CurrentTargetSpeed;
-                 desiredMove.y = desiredMove.y*movementSettings.CurrentTargetSpeed;
-                 if (m_RigidBody.velocity.sqrMagnitude <
-                     (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
+				float spd = .25f;
+				if (!m_IsGrounded)
+					spd *= .3f;
+
+                 desiredMove.x = desiredMove.x*movementSettings.CurrentTargetSpeed * spd;
+                 desiredMove.z = desiredMove.z*movementSettings.CurrentTargetSpeed * spd;
+                 //desiredMove.y = desiredMove.y*movementSettings.CurrentTargetSpeed * spd;
+				//desiredMove.y = m_RigidBody.velocity.y;
+				desiredMove.y = 0;
+				//m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0, m_RigidBody.velocity.z);
+               //  if (m_RigidBody.velocity.sqrMagnitude <
+                 //    (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
                  {
-                     m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
+					m_RigidBody.velocity += desiredMove;
                  }
             }
 

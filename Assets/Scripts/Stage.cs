@@ -10,17 +10,15 @@ public class Stage : MonoBehaviour {
 		public string name;
 		public GameObject prefab;
 	}
-
-	public Shader Post_Outline;
-	public Shader DrawSimple;
+	
 	public Hero[] heroes;
 	
 	void Start () {
-		//SpawnHero("Reinhardt", new Vector3(-23, 5, -5), true, true);
+		SpawnHero("Tracer", new Vector3(-23, 5, -5), true, true);
 
 		//SpawnHero("Tracer", new Vector3(-13, 6, 0), false, true);
 		//SpawnHero("Reinhardt", new Vector3(-15, 6, 4), false, true);
-		//SpawnHero("Tracer", new Vector3(-13, 6, 2), false, false);
+		SpawnHero("Reinhardt", new Vector3(-13, 6, 2), false, false);
 		//SpawnHero("Reinhardt", new Vector3(-18, 6, 10), false, false);
 		//SpawnHero("Reinhardt", new Vector3(-23, 5, 3), false, false);
 	}
@@ -39,11 +37,6 @@ public class Stage : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Camera.current != null && Camera.current.GetComponent<PostEffect>() == null)
-		{
-			PostEffect p = Camera.current.gameObject.AddComponent<PostEffect>();
-			p.Post_Outline = Post_Outline;
-			p.DrawSimple = DrawSimple;
-		}
+		
 	}
 }
