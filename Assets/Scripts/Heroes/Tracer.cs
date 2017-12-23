@@ -37,6 +37,8 @@ public class Tracer : HeroBase {
 	private float smoothTime = .2f;
 	private float rotSmooth = 5;
 
+	private Quaternion startRewindCamPos, startRewindCharPos;
+
 	public Material allyBullet, enemyBullet;
 
 	private Collider collider;
@@ -155,8 +157,8 @@ public class Tracer : HeroBase {
 				transform.position = Vector3.SmoothDamp(transform.position, positions[rewindInterpolateIndex], ref smoothVelocity, smoothTime);//Vector3.Slerp(transform.position, positions[rewindInterpolateIndex], rewindInterpolateTime / rewindInterpolateTimer);
 				Vector3 charRot = transform.localRotation.eulerAngles;
 				Vector3 camRot = camera.transform.localRotation.eulerAngles;
-				Vector3 charLerp = Quaternion.Slerp(transform.rotation, rotations[rewindInterpolateIndex], .5f).eulerAngles;//Quaternion.Slerp(transform.localRotation, rotations[rewindInterpolateIndex], rewindInterpolateTime / rewindInterpolateTimer).eulerAngles;
-				Vector3 camLerp = Quaternion.Slerp(camera.transform.localRotation, rotations[rewindInterpolateIndex],  .5f).eulerAngles;
+				Vector3 charLerp = Quaternion.Lerp(startRewindCharPos, rotations[0],  1 - ((float)rewindInterpolateIndex / rotations.Length)).eulerAngles;//Quaternion.Slerp(transform.localRotation, rotations[rewindInterpolateIndex], rewindInterpolateTime / rewindInterpolateTimer).eulerAngles;
+				Vector3 camLerp = Quaternion.Lerp(startRewindCamPos, rotations[0],  1 - ((float)rewindInterpolateIndex / rotations.Length)).eulerAngles;
 				charRot.y = charLerp.y;
 				camRot.x = camLerp.x;
 				transform.localRotation = Quaternion.Euler(charRot);
@@ -177,6 +179,8 @@ public class Tracer : HeroBase {
 
 	void Rewind()
 	{
+		startRewindCamPos = camera.transform.localRotation;
+		startRewindCharPos = transform.localRotation;
 		rewinding = true;
 		rewindInterpolateTimer = 0;
 		rewindInterpolateIndex = positions.Length - 1;
