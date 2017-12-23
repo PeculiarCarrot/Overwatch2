@@ -7,6 +7,7 @@ using UnityEngine;
 public class PulseBomb : MonoBehaviour {
 
 	public GameObject pulseExplosionPrefab;
+	public GameObject emptyPrefab;
 
 	private new Collider collider;
 	private new Rigidbody rigidbody;
@@ -16,6 +17,7 @@ public class PulseBomb : MonoBehaviour {
 	private float explosionForce = 40f;
 	private float explosionRadius = 3f;
 	Vector3 lastPos;
+	private GameObject posHolder;
 
 	void Start () {
 		collider = GetComponent<Collider>();
@@ -39,6 +41,7 @@ public class PulseBomb : MonoBehaviour {
 	private void Explode()
 	{
 		Rigidbody[] bodies = FindObjectsOfType<Rigidbody>();
+		Destroy(posHolder);
 
 		foreach(Rigidbody b in bodies)
 		{
@@ -64,14 +67,13 @@ public class PulseBomb : MonoBehaviour {
 		if(!stuck)
 		{
 			//Stick us to the hit object and disable physics and collisions
+			//we create a new position holder and use that as the parent to prevent skewing from attaching to scaled objects
+			posHolder = Instantiate(emptyPrefab, collider.transform.root);
 			rigidbody.isKinematic = true;
 			rigidbody.velocity = Vector3.zero;
 			this.collider.enabled = false;
 			transform.rotation = Quaternion.Euler(0, 0, 0);
-			if(collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-				transform.SetParent(collider.gameObject.transform.root);
-			else
-				transform.SetParent(collider.transform);
+			transform.SetParent(posHolder.transform);
 			stuck = transform.parent.gameObject;
 			transform.position = lastPos;
 		}

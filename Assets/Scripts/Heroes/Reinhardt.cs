@@ -41,11 +41,14 @@ public class Reinhardt : HeroBase {
 
 	void OnGUI()
 	{
-		if(!shield.IsActive())
+		if(GetInput() is PlayerInput)
 		{
-			float xMin = (Screen.width / 2) - (crosshair.width / 2);
-			float yMin = (Screen.height / 2) - (crosshair.height / 2);
-			GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
+			if(!shield.IsActive())
+			{
+				float xMin = (Screen.width / 2) - (crosshair.width / 2);
+				float yMin = (Screen.height / 2) - (crosshair.height / 2);
+				GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
+			}
 		}
 	}
 

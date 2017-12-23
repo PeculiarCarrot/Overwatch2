@@ -186,9 +186,12 @@ public class Tracer : HeroBase {
 
 	void OnGUI()
 	{
-		float xMin = (Screen.width / 2) - (crosshair.width / 2);
-		float yMin = (Screen.height / 2) - (crosshair.height / 2);
-		GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
+		if(GetInput() is PlayerInput)
+		{
+			float xMin = (Screen.width / 2) - (crosshair.width / 2);
+			float yMin = (Screen.height / 2) - (crosshair.height / 2);
+			GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
+		}
 	}
 
 	public void Blink()
@@ -198,13 +201,13 @@ public class Tracer : HeroBase {
 		int side = 0;
 		int front = 0;
 
-		if (Input.GetKey(KeyCode.S))
+		if (GetInput().GetKey(KeyCode.S))
 			front -= 1;
-		if (Input.GetKey(KeyCode.A))
+		if (GetInput().GetKey(KeyCode.A))
 			side -= 1;
-		if (Input.GetKey(KeyCode.D))
+		if (GetInput().GetKey(KeyCode.D))
 			side += 1;
-		if (Input.GetKey(KeyCode.W))
+		if (GetInput().GetKey(KeyCode.W))
 			front += 1;
 
 		if(front == 0 && side != 0)
