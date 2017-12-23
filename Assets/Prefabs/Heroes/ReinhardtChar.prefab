@@ -708,7 +708,7 @@ MonoBehaviour:
     StrafeSpeed: 6
     RunMultiplier: 1
     RunKey: 304
-    JumpForce: 60
+    JumpForce: 85
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
@@ -738,8 +738,8 @@ MonoBehaviour:
     XSensitivity: 2.7
     YSensitivity: 2.7
     clampVerticalRotation: 1
-    MinimumX: -90
-    MaximumX: 90
+    MinimumX: -89
+    MaximumX: 89
     smooth: 0
     smoothTime: 18
     lockCursor: 1

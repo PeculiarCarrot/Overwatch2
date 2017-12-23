@@ -355,6 +355,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -599,6 +600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   camera: {fileID: 0}
+  ai: 0
   firstPersonController: {fileID: 114659390254097500}
   crosshair: {fileID: 2800000, guid: da96f674d79a3f147821ba6f8db057c9, type: 3}
   pulseBombPrefab: {fileID: 1112806791652510, guid: 5cb0d22e3eec4be4baabcac9e7982d20,
@@ -660,7 +662,7 @@ MonoBehaviour:
     StrafeSpeed: 6
     RunMultiplier: 1
     RunKey: 304
-    JumpForce: 75
+    JumpForce: 85
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
@@ -690,8 +692,8 @@ MonoBehaviour:
     XSensitivity: 2.7
     YSensitivity: 2.7
     clampVerticalRotation: 1
-    MinimumX: -90
-    MaximumX: 90
+    MinimumX: -89
+    MaximumX: 89
     smooth: 0
     smoothTime: 18
     lockCursor: 1
