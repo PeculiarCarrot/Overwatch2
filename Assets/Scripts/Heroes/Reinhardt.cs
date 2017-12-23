@@ -89,6 +89,7 @@ public class Reinhardt : HeroBase {
 	{
 		if (!hammerObject.activeInHierarchy)
 			return false;
+		Debug.Log(hammer.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
 		string current = hammer.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 		return current == "IdleHammer";
 	}

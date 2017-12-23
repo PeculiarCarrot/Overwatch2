@@ -113,6 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pulseExplosionPrefab: {fileID: 1469166492826556, guid: a2593c52e8cc405459447797c376890d,
     type: 2}
+  emptyPrefab: {fileID: 1086032881613936, guid: 0ebf402a537511d4399eb80478b56849,
+    type: 2}
 --- !u!135 &135089076585922696
 SphereCollider:
   m_ObjectHideFlags: 1
