@@ -10,6 +10,7 @@ public class HeroBase : MonoBehaviour {
 	private int maxAmmo, ammo;
 	private HeroInput input;
 	public new GameObject camera;
+	public bool ai;
 
 	protected Rigidbody body;
 
@@ -41,21 +42,34 @@ public class HeroBase : MonoBehaviour {
 
 	public void Reset()
 	{
+		gameObject.layer = LayerMask.NameToLayer(team ? "Team1" : "Team2");
+		foreach(MonoBehaviour c in GetComponents<MonoBehaviour>())
+		{
+			c.enabled = true;
+		}
 		body = GetComponent<Rigidbody>();
 
 		HeroInput[] inputs = GetComponents<HeroInput>();
+		camera = GetComponentInChildren<Camera>().gameObject;
+		if(ai)
+		{
+			GetComponent<PlayerInput>().enabled = false;
+			foreach(AudioListener al in GetComponentsInChildren<AudioListener>())
+				al.enabled = false;
+			foreach(Camera cam in GetComponentsInChildren<Camera>())
+				cam.enabled = false;
+		}
+		else
+		{
+			GetComponent<AIInput>().enabled = false;
+		}
+
 		foreach (HeroInput i in inputs)
 		{
 			if (i.enabled)
 			{
 				input = i;
 			}
-		}
-		camera = GetComponentInChildren<Camera>().gameObject;
-		if(!(input is PlayerInput))
-		{
-			GetComponentInChildren<Camera>().enabled = false;
-			GetComponentInChildren<AudioListener>().enabled = false;
 		}
 
 		GetComponent<Renderer>().material = Resources.Load<Material>(team ? "Textures/ally" : "Textures/enemy");

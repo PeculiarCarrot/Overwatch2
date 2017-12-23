@@ -11,16 +11,18 @@ public class Stage : MonoBehaviour {
 		public GameObject prefab;
 	}
 
+	public Shader Post_Outline;
+	public Shader DrawSimple;
 	public Hero[] heroes;
 	
 	void Start () {
-		SpawnHero("Tracer", new Vector3(-23, 5, -5), true, true);
+		//SpawnHero("Reinhardt", new Vector3(-23, 5, -5), true, true);
 
-		SpawnHero("Tracer", new Vector3(-13, 6, 0), false, true);
-		SpawnHero("Tracer", new Vector3(-15, 6, 4), false, true);
-		SpawnHero("Tracer", new Vector3(-13, 6, 2), false, false);
-		SpawnHero("Tracer", new Vector3(-18, 6, 10), false, false);
-		SpawnHero("Tracer", new Vector3(-7, 6, 3), false, false);
+		//SpawnHero("Tracer", new Vector3(-13, 6, 0), false, true);
+		//SpawnHero("Reinhardt", new Vector3(-15, 6, 4), false, true);
+		//SpawnHero("Tracer", new Vector3(-13, 6, 2), false, false);
+		//SpawnHero("Reinhardt", new Vector3(-18, 6, 10), false, false);
+		//SpawnHero("Reinhardt", new Vector3(-23, 5, 3), false, false);
 	}
 
 	public GameObject SpawnHero(string name, Vector3 pos, bool player, bool team)
@@ -30,22 +32,18 @@ public class Stage : MonoBehaviour {
 			if (h.name == name)
 				prefab = h.prefab;
 		GameObject o = Instantiate(prefab, pos, Quaternion.identity);
-		if(player)
-		{
-			o.GetComponent<TracerAIInput>().enabled = false;
-		}
-		else
-		{
-			o.GetComponent<PlayerInput>().enabled = false;
-			o.GetComponentInChildren<AudioListener>().enabled = false;
-			o.GetComponentInChildren<Camera>().enabled = false;
-		}
+		o.GetComponent<HeroBase>().ai = !player;
 		o.GetComponent<HeroBase>().team = team;
 		o.GetComponent<HeroBase>().Reset();
 		return o;
 	}
 	
 	void Update () {
-		
+		if (Camera.current != null && Camera.current.GetComponent<PostEffect>() == null)
+		{
+			PostEffect p = Camera.current.gameObject.AddComponent<PostEffect>();
+			p.Post_Outline = Post_Outline;
+			p.DrawSimple = DrawSimple;
+		}
 	}
 }

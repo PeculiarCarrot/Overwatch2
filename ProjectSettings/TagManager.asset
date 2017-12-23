@@ -17,11 +17,11 @@ TagManager:
   - Hitbox
   - Player
   - PhysicsObject
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Team1
+  - Team2
+  - Team1Hitbox
+  - Team2Hitbox
+  - Outline
   - 
   - 
   - 

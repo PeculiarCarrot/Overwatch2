@@ -10,7 +10,7 @@ public class ReinhardtHammer : MonoBehaviour {
 	public GameObject hitbox;
 	
 	void Start () {
-		
+		collider.gameObject.layer = LayerMask.NameToLayer(reinhardt.team ? "Team1Hitbox" : "Team2Hitbox");
 	}
 
 	public void Shatter()

@@ -74,7 +74,7 @@ public class Reinhardt : HeroBase {
 
 	public void SpawnFirestrike()
 	{
-		Instantiate(firestrikePrefab, transform.position + firstPersonCam.transform.forward * 1.7f + new Vector3(0, .7f, 0), firstPersonCam.transform.rotation);
+		Instantiate(firestrikePrefab, transform.position + firstPersonCam.transform.forward * 1.7f + new Vector3(0, .7f, 0), firstPersonCam.transform.rotation).layer = LayerMask.NameToLayer(team ? "Team1" : "Team2");
 	}
 
 	private bool CanFireStrike()
@@ -162,7 +162,7 @@ public class Reinhardt : HeroBase {
 			if (charging)
 				firstPersonController.movementSettings.JumpForce = 0;
 			else
-				firstPersonController.movementSettings.JumpForce = 55;
+				firstPersonController.movementSettings.JumpForce = 75;
 			firstPersonController.movementSettings.ForwardSpeed = charging ? 0 : shieldingSpeed;
 			firstPersonController.movementSettings.BackwardSpeed = charging ? 0 : shieldingSpeed;
 			firstPersonController.movementSettings.StrafeSpeed = charging ? 0 : shieldingSpeed;
@@ -173,15 +173,21 @@ public class Reinhardt : HeroBase {
 			firstPersonCam.enabled = true;
 			thirdPersonCam.enabled = false;
 			hammerObject.SetActive(true);
-			firstPersonController.movementSettings.JumpForce = 55;
+			firstPersonController.movementSettings.JumpForce = 75;
 			firstPersonController.movementSettings.ForwardSpeed = regularSpeed;
 			firstPersonController.movementSettings.BackwardSpeed = regularSpeed;
 			firstPersonController.movementSettings.StrafeSpeed = regularSpeed;
 			firstPersonController.moveCam = firstPersonCam;
 		}
+
+		if(ai)
+		{
+			firstPersonCam.enabled = false;
+			thirdPersonCam.enabled = false;
+		}
 	}
 
-	public void FixedUpdate()
+	public new void FixedUpdate()
 	{
 		base.FixedUpdate();
 		if(charging)

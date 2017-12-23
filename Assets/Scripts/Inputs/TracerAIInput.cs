@@ -5,7 +5,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(HeroBase))]
-public class TracerAIInput : HeroInput {
+public class TracerAIInput : AIInput {
 	
 	public GameObject target;
 	Vector3 lookingAt;

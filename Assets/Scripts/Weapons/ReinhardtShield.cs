@@ -12,6 +12,7 @@ public class ReinhardtShield : MonoBehaviour {
 	private new Collider collider;
 	
 	void Start () {
+		gameObject.layer = LayerMask.NameToLayer(GetComponentInParent<HeroBase>().team ? "Team1" : "Team2");
 		maxHP = 2000;
 		hp = maxHP;
 		renderer = GetComponent<MeshRenderer>();

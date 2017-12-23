@@ -72,7 +72,7 @@ public class Tracer : HeroBase {
 
 	public void Ult()
 	{
-		Instantiate(pulseBombPrefab, camera.transform.position + camera.transform.forward * .75f, camera.transform.rotation);
+		Instantiate(pulseBombPrefab, camera.transform.position + camera.transform.forward * .75f, camera.transform.rotation).layer = LayerMask.NameToLayer(team ? "Team1" : "Team2");
 		ultTimer = 0;
 	}
 	
@@ -253,11 +253,11 @@ public class Tracer : HeroBase {
 			Vector3 origin = i == 0 ? guns.GetLeftGunTip() : guns.GetRightGunTip();
 			Vector3 direction = camera.transform.forward + offset;
 			Vector3 point = origin + direction * 100;
-			if (Physics.Raycast(origin, direction, out hit))
+			if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity, LayerMask.GetMask(team ? "Team2" : "Team1", "Ground", "PhysicsObject")))
 			{
 				Debug.DrawLine(origin, hit.point, i == 0 ? Color.red : Color.blue);
 				point = hit.point;
-				Instantiate(hit.collider.gameObject.layer == LayerMask.NameToLayer("Player") && hit.collider.GetComponent<HeroBase>().team != team ? bloodPrefab : bulletDustPrefab, hit.point, Quaternion.identity);
+				Instantiate(hit.collider.GetComponent<HeroBase>() != null && hit.collider.GetComponent<HeroBase>().team != team ? bloodPrefab : bulletDustPrefab, hit.point, Quaternion.identity);
 				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("PhysicsObject"))
 				{
 					hit.collider.gameObject.GetComponent<Rigidbody>().AddForceAtPosition(direction * 5, point);
