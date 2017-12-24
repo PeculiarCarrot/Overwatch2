@@ -9,6 +9,7 @@ public class Reinhardt : HeroBase {
 	public Camera firstPersonCam, thirdPersonCam;
 	public GameObject shieldObject, hammerObject;
 	public GameObject firestrikePrefab;
+	public GameObject earthShatterProjectilePrefab;
 	public GameObject chargeHitbox;
 	private ReinhardtHammer hammer;
 	private ReinhardtShield shield;
@@ -56,6 +57,17 @@ public class Reinhardt : HeroBase {
 	public void EarthShatter()
 	{
 		ulting = false;
+
+		float spread = 90;
+		float num = 5;
+		float anglePer = spread / num;
+		float angle = -anglePer * 2;
+
+		for (int i = 0; i < num; i++)
+		{
+			Instantiate(earthShatterProjectilePrefab, transform.position + new Vector3(0, 0, 0), Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, angle, 0)));
+			angle += anglePer;
+		}
 	}
 
 	void OnGUI()
@@ -73,6 +85,10 @@ public class Reinhardt : HeroBase {
 
 	void Firestrike()
 	{
+		shield.SetActive(false);
+		firstPersonCam.enabled = true;
+		thirdPersonCam.enabled = false;
+		hammerObject.SetActive(true);
 		hammer.animator.Play("HammerFirestrike");
 		firestrikeTimer = 0;
 	}
@@ -85,11 +101,15 @@ public class Reinhardt : HeroBase {
 
 	bool CanUlt()
 	{
-		return ultTimer >= ultTime && !charging && IsHammerIdle() && !shield.IsActive();
+		return ultTimer >= ultTime && !charging && (IsHammerIdle() || shield.IsActive());
 	}
 
 	void Ult()
 	{
+		shield.SetActive(false);
+		firstPersonCam.enabled = true;
+		thirdPersonCam.enabled = false;
+		hammerObject.SetActive(true);
 		hammer.animator.Play("Earthshatter");
 		ultTimer = 0;
 		ulting = true;
@@ -102,7 +122,7 @@ public class Reinhardt : HeroBase {
 
 	private bool CanFireStrike()
 	{
-		return firestrikeTimer >= firestrikeTime && IsHammerIdle() && !shield.IsActive();
+		return firestrikeTimer >= firestrikeTime && (IsHammerIdle() || shield.IsActive());
 	}
 
 	private bool IsHammerIdle()
@@ -115,7 +135,7 @@ public class Reinhardt : HeroBase {
 
 	private bool CanCharge()
 	{
-		return !charging && chargeTimer >= chargeTime && IsHammerIdle() && !shield.IsActive();
+		return !charging && chargeTimer >= chargeTime && (IsHammerIdle() || shield.IsActive());
 	}
 
 	private HeroBase stuckHero;
@@ -128,6 +148,9 @@ public class Reinhardt : HeroBase {
 
 	private void Charge()
 	{
+		shield.SetActive(false);
+		firstPersonCam.enabled = true;
+		thirdPersonCam.enabled = false;
 		charging = true;
 		chargeTimer = 0;
 		chargeStartupTimer = 0;
@@ -168,6 +191,11 @@ public class Reinhardt : HeroBase {
 
 			if(!IsStunned() && !ulting)
 			{
+
+				if(GetInput().GetKey(KeyCode.Mouse1) && !IsStunned() && (IsHammerIdle() || shield.IsActive()))
+					shield.SetActive(true);
+				else
+					shield.SetActive(false);
 				if(CanFireStrike() && GetInput().GetKeyDown(KeyCode.E))
 				{
 					Firestrike();
@@ -183,16 +211,11 @@ public class Reinhardt : HeroBase {
 					Ult();
 				}
 
-				if(IsSwinging() && !shield.IsActive())
+				if(IsSwinging())
 				{
 					Swing();
 				}
 			}
-
-			if(GetInput().GetKey(KeyCode.Mouse1) && !IsStunned() && (IsHammerIdle() || shield.IsActive()))
-				shield.SetActive(true);
-			else
-				shield.SetActive(false);
 		}
 		else
 		{

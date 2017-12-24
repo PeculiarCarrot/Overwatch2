@@ -761,6 +761,8 @@ MonoBehaviour:
   hammerObject: {fileID: 1290030533027810}
   firestrikePrefab: {fileID: 1383017675676130, guid: a4ded55a4eba60d48badc46be67a7031,
     type: 2}
+  earthShatterProjectilePrefab: {fileID: 1218808457977738, guid: c70d921f029870449ae67d777fdfe075,
+    type: 2}
   chargeHitbox: {fileID: 1598803539935884}
   crosshair: {fileID: 2800000, guid: f113e86a18a42134a8bc7c98a66415e7, type: 3}
 --- !u!114 &114693670766335568
@@ -794,7 +796,7 @@ MonoBehaviour:
     StrafeSpeed: 6
     RunMultiplier: 1
     RunKey: 304
-    JumpForce: 85
+    JumpForce: 95
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
