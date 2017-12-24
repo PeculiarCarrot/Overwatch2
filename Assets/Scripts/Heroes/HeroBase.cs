@@ -10,7 +10,10 @@ public class HeroBase : MonoBehaviour {
 	private int maxAmmo, ammo;
 	private HeroInput input;
 	public new GameObject camera;
+	[HideInInspector]
 	public bool ai;
+
+	private bool isBeingCharged;
 
 	protected Rigidbody body;
 	public Material outlineMaterial;
@@ -20,6 +23,21 @@ public class HeroBase : MonoBehaviour {
 	{
 		maxAmmo = max;
 		ammo = max;
+	}
+
+	public bool IsBeingCharged()
+	{
+		return isBeingCharged;
+	}
+
+	public void SetBeingCharged(bool b)
+	{
+		isBeingCharged = b;
+	}
+
+	public bool IsStunned()
+	{
+		return isBeingCharged;
 	}
 
 	public void SetAmmo(int ammo)

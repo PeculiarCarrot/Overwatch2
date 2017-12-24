@@ -118,28 +118,31 @@ public class Tracer : HeroBase {
 				rotations[rotations.Length - 1] = Quaternion.Euler(r);
 				savePositionTimer = 0;
 			}
-			if(((GetInput().GetKeyDown(KeyCode.R)  && GetAmmo() < GetMaxAmmo()) || GetAmmo() == 0) && !guns.IsReloading())
+			if(!IsStunned())
 			{
-				Reload();
-				SetAmmo(GetMaxAmmo());
-			}
+				if(((GetInput().GetKeyDown(KeyCode.R)  && GetAmmo() < GetMaxAmmo()) || GetAmmo() == 0) && !guns.IsReloading())
+				{
+					Reload();
+					SetAmmo(GetMaxAmmo());
+				}
 
-			if (GetInput().GetKeyDown(KeyCode.E) && CanRewind())
-				Rewind();
+				if (GetInput().GetKeyDown(KeyCode.E) && CanRewind())
+					Rewind();
 
-			if((GetInput().GetKeyDown(KeyCode.Mouse1) || GetInput().GetKeyDown(KeyCode.LeftShift)) && CanBlink())
-			{
-				Blink();
-			}
+				if((GetInput().GetKeyDown(KeyCode.Mouse1) || GetInput().GetKeyDown(KeyCode.LeftShift)) && CanBlink())
+				{
+					Blink();
+				}
 
-			if(GetInput().GetKey(KeyCode.Mouse0) && CanShoot())
-			{
-				Shoot();
-			}
+				if(GetInput().GetKey(KeyCode.Mouse0) && CanShoot())
+				{
+					Shoot();
+				}
 
-			if(GetInput().GetKeyDown(KeyCode.Q) && CanUlt())
-			{
-				Ult();
+				if(GetInput().GetKeyDown(KeyCode.Q) && CanUlt())
+				{
+					Ult();
+				}
 			}
 		}
 		else

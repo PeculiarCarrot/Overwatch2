@@ -14,7 +14,7 @@ public class Stage : MonoBehaviour {
 	public Hero[] heroes;
 	
 	void Start () {
-		SpawnHero("Tracer", new Vector3(-23, 5, -5), true, true);
+		SpawnHero("Reinhardt", new Vector3(-23, 5, -5), true, true);
 
 		SpawnHero("Tracer", new Vector3(-13, 6, 0), false, true);
 		SpawnHero("Reinhardt", new Vector3(-15, 6, 4), false, false);

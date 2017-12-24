@@ -9,6 +9,7 @@ public class Reinhardt : HeroBase {
 	public Camera firstPersonCam, thirdPersonCam;
 	public GameObject shieldObject, hammerObject;
 	public GameObject firestrikePrefab;
+	public GameObject chargeHitbox;
 	private ReinhardtHammer hammer;
 	private ReinhardtShield shield;
 	private float regularSpeed = 6f, shieldingSpeed = 2.75f;
@@ -98,6 +99,14 @@ public class Reinhardt : HeroBase {
 		return !charging && chargeTimer >= chargeTime && IsHammerIdle() && !shield.IsActive();
 	}
 
+	private HeroBase stuckHero;
+
+	public void ChargeStick(HeroBase hero)
+	{
+		hero.SetBeingCharged(true);
+		stuckHero = hero;
+	}
+
 	private void Charge()
 	{
 		charging = true;
@@ -123,28 +132,32 @@ public class Reinhardt : HeroBase {
 				chargeTimer += Time.deltaTime;
 			if (ultTimer < ultTime)
 				ultTimer += Time.deltaTime;
+			Debug.Log(name +": "+IsStunned());
 
-			if(CanFireStrike() && GetInput().GetKeyDown(KeyCode.E))
+			if(!IsStunned())
 			{
-				Firestrike();
+				if(CanFireStrike() && GetInput().GetKeyDown(KeyCode.E))
+				{
+					Firestrike();
+				}
+
+				if(CanCharge() && GetInput().GetKeyDown(KeyCode.LeftShift))
+				{
+					Charge();
+				}
+
+				if(CanUlt() && GetInput().GetKeyDown(KeyCode.Q))
+				{
+					Ult();
+				}
+
+				if(IsSwinging() && !shield.IsActive())
+				{
+					Swing();
+				}
 			}
 
-			if(CanCharge() && GetInput().GetKeyDown(KeyCode.LeftShift))
-			{
-				Charge();
-			}
-
-			if(CanUlt() && GetInput().GetKeyDown(KeyCode.Q))
-			{
-				Ult();
-			}
-
-			if(IsSwinging() && !shield.IsActive())
-			{
-				Swing();
-			}
-
-			if(GetInput().GetKey(KeyCode.Mouse1) && (IsHammerIdle() || shield.IsActive()))
+			if(GetInput().GetKey(KeyCode.Mouse1) && !IsStunned() && (IsHammerIdle() || shield.IsActive()))
 				shield.SetActive(true);
 			else
 				shield.SetActive(false);
@@ -157,16 +170,22 @@ public class Reinhardt : HeroBase {
 			if(chargeStartupTimer >= chargeStartupTime)
 			{
 				RaycastHit hit;
-				bool hitWall = Physics.Raycast(transform.position, transform.forward, out hit, .4f, LayerMask.GetMask("Ground"));
+				bool hitWall = Physics.Raycast(transform.position, transform.forward, out hit, stuckHero == null ? .4f : 1.4f, LayerMask.GetMask("Ground"));
+				chargeHitbox.SetActive(true);
 
 				if(chargeDurationTimer > chargeDuration + chargeStartupTime || hitWall)
 				{
 					charging = false;
 					firstPersonController.SetCanTurn(true);
 					firstPersonController.allowMoveBody = false;
+					if (stuckHero != null)
+						stuckHero.SetBeingCharged(false);
+					stuckHero = null;
 				}
 			}
 		}
+		if(!charging)
+			chargeHitbox.SetActive(false);
 
 		if(shield.IsActive() || charging)
 		{
@@ -209,6 +228,13 @@ public class Reinhardt : HeroBase {
 			Vector3 newPos = transform.position;
 			newPos += transform.forward * chargeSpeed * Time.deltaTime;
 			body.MovePosition(newPos);
+
+			if(stuckHero != null)
+			{
+				newPos = stuckHero.transform.position;
+				newPos = transform.position + camera.transform.forward * 1f;
+				stuckHero.GetComponent<Rigidbody>().MovePosition(newPos);
+			}
 		}
 	}
 }
