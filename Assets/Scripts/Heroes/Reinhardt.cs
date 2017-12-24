@@ -222,6 +222,12 @@ public class Reinhardt : HeroBase {
 			chargeDurationTimer += Time.deltaTime;
 			chargeStartupTimer += Time.deltaTime;
 
+			float turnSpeed = 16f;
+			if(GetInput().GetKey(KeyCode.A))
+				transform.Rotate(0, -turnSpeed * Time.deltaTime, 0);
+			if(GetInput().GetKey(KeyCode.D))
+				transform.Rotate(0, turnSpeed * Time.deltaTime, 0);
+
 			if(chargeStartupTimer >= chargeStartupTime)
 			{
 				RaycastHit hit;

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EarthShatterProjectile : MonoBehaviour {
 
-	float speed = 30f;
+	float speed = 50f;
 	float lifetime = 0;
 	public GameObject explosion;
 
 	void Start () {
-		Destroy(gameObject, .5f);
+		Destroy(gameObject, .7f);
 	}
 
 	void Update () {
