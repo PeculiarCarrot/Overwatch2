@@ -442,7 +442,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8fc374827f172174e90b48fb0a6ea48a, type: 2}
+  - {fileID: 2100000, guid: a3d6e887b7e652c4bbaa4ab55437cfb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -601,6 +601,8 @@ MonoBehaviour:
   team: 0
   camera: {fileID: 0}
   ai: 0
+  outlineMaterial: {fileID: 2100000, guid: 415252035a3f687469c0b3df5e9a1b78, type: 2}
+  heroMaterial: {fileID: 2100000, guid: a3d6e887b7e652c4bbaa4ab55437cfb4, type: 2}
   firstPersonController: {fileID: 114659390254097500}
   crosshair: {fileID: 2800000, guid: da96f674d79a3f147821ba6f8db057c9, type: 3}
   pulseBombPrefab: {fileID: 1112806791652510, guid: 5cb0d22e3eec4be4baabcac9e7982d20,

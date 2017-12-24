@@ -89,7 +89,6 @@ public class Reinhardt : HeroBase {
 	{
 		if (!hammerObject.activeInHierarchy)
 			return false;
-		Debug.Log(hammer.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
 		string current = hammer.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 		return current == "IdleHammer";
 	}
@@ -103,9 +102,15 @@ public class Reinhardt : HeroBase {
 	{
 		charging = true;
 		chargeTimer = 0;
+		chargeStartupTimer = 0;
 		chargeDurationTimer = 0;
 		firstPersonController.SetCanTurn(false);
 		firstPersonController.allowMoveBody = true;
+
+		if(firstPersonController.IsGrounded())
+		{
+			firstPersonController.Jump(.7f);
+		}
 	}
 	
 	void Update () {
@@ -147,14 +152,19 @@ public class Reinhardt : HeroBase {
 		else
 		{
 			chargeDurationTimer += Time.deltaTime;
-			RaycastHit hit;
-			bool hitWall = Physics.Raycast(transform.position, transform.forward, out hit, .4f, LayerMask.GetMask("Ground"));
+			chargeStartupTimer += Time.deltaTime;
 
-			if(chargeDurationTimer > chargeDuration || hitWall)
+			if(chargeStartupTimer >= chargeStartupTime)
 			{
-				charging = false;
-				firstPersonController.SetCanTurn(true);
-				firstPersonController.allowMoveBody = false;
+				RaycastHit hit;
+				bool hitWall = Physics.Raycast(transform.position, transform.forward, out hit, .4f, LayerMask.GetMask("Ground"));
+
+				if(chargeDurationTimer > chargeDuration + chargeStartupTime || hitWall)
+				{
+					charging = false;
+					firstPersonController.SetCanTurn(true);
+					firstPersonController.allowMoveBody = false;
+				}
 			}
 		}
 
@@ -194,7 +204,7 @@ public class Reinhardt : HeroBase {
 	public new void FixedUpdate()
 	{
 		base.FixedUpdate();
-		if(charging)
+		if(charging && chargeStartupTimer >= chargeStartupTime)
 		{
 			Vector3 newPos = transform.position;
 			newPos += transform.forward * chargeSpeed * Time.deltaTime;

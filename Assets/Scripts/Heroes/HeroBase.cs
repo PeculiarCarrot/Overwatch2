@@ -13,6 +13,8 @@ public class HeroBase : MonoBehaviour {
 	public bool ai;
 
 	protected Rigidbody body;
+	public Material outlineMaterial;
+	public Material heroMaterial;
 
 	protected void SetMaxAmmo(int max)
 	{
@@ -72,7 +74,17 @@ public class HeroBase : MonoBehaviour {
 			}
 		}
 
-		GetComponent<Renderer>().material = Resources.Load<Material>(team ? "Textures/ally" : "Textures/enemy");
+		if(ai)
+		{
+			Material[] theMaterials = new Material[2];
+			theMaterials[1] = heroMaterial;
+			theMaterials[0] = new Material(outlineMaterial);
+			theMaterials[0].SetColor("_OutlineColor", team ? Color.blue : Color.red);
+			GetComponent<Renderer>().materials = theMaterials;
+		}
+		else {
+			GetComponent<Renderer>().material = heroMaterial;
+		}
 	}
 	
 	public void Awake () {

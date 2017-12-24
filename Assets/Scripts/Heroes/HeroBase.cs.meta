@@ -1,11 +1,13 @@
 fileFormatVersion: 2
 guid: 4e064eb091a3eb54e8a54f7b8c654f61
-timeCreated: 1513603643
+timeCreated: 1514071444
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - camera: {instanceID: 0}
+  - outlineShader: {fileID: 4800000, guid: 10303ca452ec9af42be9fe8405fa31e3, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

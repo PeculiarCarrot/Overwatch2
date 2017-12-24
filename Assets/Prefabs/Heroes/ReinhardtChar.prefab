@@ -165,8 +165,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1882147103177540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.079332, y: 2.75, z: 5.72}
-  m_LocalScale: {x: 0.92900586, y: 0.92900586, z: 0.92900586}
+  m_LocalPosition: {x: -15.788293, y: 0.18894327, z: -31.077843}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4598512632788406}
   - {fileID: 4237356280261692}
@@ -457,7 +457,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8c4ad1e8752464549af194dc90eb6b5a, type: 2}
+  - {fileID: 2100000, guid: fc5f3301dfaf32549945428f305f6e9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -655,6 +655,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64f03c4e7b2d9c24b9c671d2d8a222db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rein: {fileID: 114635855811383562}
+  red: {fileID: 2100000, guid: 43edb7cacbcfe1d4db7f0b23d751f590, type: 2}
+  blue: {fileID: 2100000, guid: 09f1c01c70bb220408258c49eab5ba86, type: 2}
 --- !u!114 &114635855811383562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -669,6 +672,8 @@ MonoBehaviour:
   team: 0
   camera: {fileID: 0}
   ai: 0
+  outlineMaterial: {fileID: 2100000, guid: 415252035a3f687469c0b3df5e9a1b78, type: 2}
+  heroMaterial: {fileID: 2100000, guid: fc5f3301dfaf32549945428f305f6e9c, type: 2}
   firstPersonController: {fileID: 114748962101794832}
   firstPersonCam: {fileID: 20251100779080328}
   thirdPersonCam: {fileID: 20064628096770450}

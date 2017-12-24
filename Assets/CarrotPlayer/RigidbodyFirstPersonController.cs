@@ -150,6 +150,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
+		public bool IsGrounded()
+		{
+			return m_IsGrounded;
+		}
 
         private void FixedUpdate()
         {
@@ -185,10 +189,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 if (m_Jump)
                 {
-                    m_RigidBody.drag = 0f;
-                    m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
-                    m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
-                    m_Jumping = true;
+					Jump(1);
                 }
 
 				if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f && !allowMoveBody)
@@ -206,6 +207,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             m_Jump = false;
         }
+
+		public void Jump(float multiplier)
+		{
+			m_RigidBody.drag = 0f;
+			m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
+			m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce * multiplier, 0f), ForceMode.Impulse);
+			m_Jumping = true;
+		}
 
 
         private float SlopeMultiplier()
