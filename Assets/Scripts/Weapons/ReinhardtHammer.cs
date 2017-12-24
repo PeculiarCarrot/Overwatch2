@@ -15,7 +15,12 @@ public class ReinhardtHammer : MonoBehaviour {
 
 	public void Shatter()
 	{
-		
+		reinhardt.EarthShatter();
+	}
+
+	public void EnableShatter()
+	{
+		reinhardt.EnableShatter();
 	}
 
 	public void DisableCollider()

@@ -144,7 +144,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			float airFric = .95f;
 			m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x * (m_IsGrounded ? fric : airFric), m_RigidBody.velocity.y * (m_IsGrounded ? fric : 1), m_RigidBody.velocity.z * (m_IsGrounded ? fric : airFric));
 
-			if (heroInput.GetKeyDown(KeyCode.Space) && !m_Jump)
+			if (heroInput.GetKeyDown(KeyCode.Space) && !m_Jump && canMove)
             {
                 m_Jump = true;
             }
@@ -244,17 +244,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
             
             Vector2 input = new Vector2
                 {
-					x = heroInput.GetKey(KeyCode.A) ? -1 : (heroInput.GetKey(KeyCode.D) ? 1 : 0),
-					y = heroInput.GetKey(KeyCode.S) ? -1 : (heroInput.GetKey(KeyCode.W) ? 1 : 0)
+					x = heroInput.GetKey(KeyCode.A) && canMove ? -1 : (heroInput.GetKey(KeyCode.D) && canMove  ? 1 : 0),
+					y = heroInput.GetKey(KeyCode.S) && canMove  ? -1 : (heroInput.GetKey(KeyCode.W) && canMove  ? 1 : 0)
             };
 			movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
-        }
+		}
 
 		private bool canTurn = true;
 		public void SetCanTurn(bool can)
 		{
 			canTurn = can;
+		}
+
+		private bool canMove = true;
+		public void SetCanMove(bool can)
+		{
+			canMove = can;
 		}
 
         private void RotateView()

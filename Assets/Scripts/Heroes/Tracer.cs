@@ -35,13 +35,12 @@ public class Tracer : HeroBase {
 
 	private Vector3 smoothVelocity = Vector3.zero;
 	private float smoothTime = .2f;
-	private float rotSmooth = 5;
 
 	private Quaternion startRewindCamPos, startRewindCharPos;
 
 	public Material allyBullet, enemyBullet;
 
-	private Collider collider;
+	private new Collider collider;
 	
 	void Start () {
 		blinkCharges = maxBlinkCharges;

@@ -15,11 +15,14 @@ public class Reinhardt : HeroBase {
 	private float regularSpeed = 6f, shieldingSpeed = 2.75f;
 	public Texture crosshair;
 
-	private float chargeStartupTimer, chargeStartupTime = .7f;
+	private float chargeStartupTimer, chargeStartupTime = .5f;
 	private float chargeTimer, chargeTime = 1f;
 	private float ultTimer, ultTime = 3f;
 	private float chargeSpeed = 15f, chargeDurationTimer, chargeDuration = 3.3f;
 	private bool charging;
+
+	private bool shatterEnabled;
+	private bool ulting;
 
 	private float firestrikeTimer, firestrikeTime = 6f;
 	
@@ -40,11 +43,26 @@ public class Reinhardt : HeroBase {
 		return current != "HammerFirestrike" && current != "IdleHammer";
 	}
 
+	public bool CanLandEarthshatter()
+	{
+		return shatterEnabled;
+	}
+
+	public void EnableShatter()
+	{
+		shatterEnabled = true;
+	}
+
+	public void EarthShatter()
+	{
+		ulting = false;
+	}
+
 	void OnGUI()
 	{
 		if(GetInput() is PlayerInput)
 		{
-			if(!shield.IsActive())
+			if(!shield.IsActive() && !charging)
 			{
 				float xMin = (Screen.width / 2) - (crosshair.width / 2);
 				float yMin = (Screen.height / 2) - (crosshair.height / 2);
@@ -74,6 +92,7 @@ public class Reinhardt : HeroBase {
 	{
 		hammer.animator.Play("Earthshatter");
 		ultTimer = 0;
+		ulting = true;
 	}
 
 	public void SpawnFirestrike()
@@ -118,11 +137,25 @@ public class Reinhardt : HeroBase {
 
 		if(firstPersonController.IsGrounded())
 		{
-			firstPersonController.Jump(.7f);
+			firstPersonController.Jump(.5f);
 		}
 	}
 	
 	void Update () {
+
+		if(CanLandEarthshatter() && firstPersonController.IsGrounded())
+		{
+			hammer.animator.Play("EarthShatterComplete");
+			shatterEnabled = false;
+		}
+		if(ulting && firstPersonController.IsGrounded())
+		{
+			firstPersonController.SetCanMove(false);
+		}
+		else
+		{
+			firstPersonController.SetCanMove(true);
+		}
 
 		if(!charging)
 		{
@@ -132,9 +165,8 @@ public class Reinhardt : HeroBase {
 				chargeTimer += Time.deltaTime;
 			if (ultTimer < ultTime)
 				ultTimer += Time.deltaTime;
-			Debug.Log(name +": "+IsStunned());
 
-			if(!IsStunned())
+			if(!IsStunned() && !ulting)
 			{
 				if(CanFireStrike() && GetInput().GetKeyDown(KeyCode.E))
 				{
