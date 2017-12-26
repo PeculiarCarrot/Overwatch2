@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ReinhardtShieldRed
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -91,4 +91,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 0.28676468, b: 0.28676468, a: 0.303}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _TintColor: {r: 0, g: 0.66896534, b: 1, a: 0.103}
+    - _TintColor: {r: 1, g: 0, b: 0, a: 0.103}
