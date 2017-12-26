@@ -6,7 +6,6 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class Reinhardt : HeroBase {
 
 	public RigidbodyFirstPersonController firstPersonController;
-	public Camera firstPersonCam, thirdPersonCam;
 	public GameObject shieldObject, hammerObject;
 	public GameObject firestrikePrefab;
 	public GameObject earthShatterProjectilePrefab;
@@ -20,6 +19,7 @@ public class Reinhardt : HeroBase {
 	private float chargeTimer, chargeTime = 1f;
 	private float ultTimer, ultTime = 3f;
 	private float chargeSpeed = 15f, chargeDurationTimer, chargeDuration = 3.3f;
+	private float unmodifiedJumpForce;
 	private bool charging;
 
 	private bool shatterEnabled;
@@ -31,6 +31,7 @@ public class Reinhardt : HeroBase {
 		shield = shieldObject.GetComponent<ReinhardtShield>();
 		firestrikeTimer = firestrikeTime;
 		hammer = hammerObject.GetComponent<ReinhardtHammer>();
+		unmodifiedJumpForce = firstPersonController.movementSettings.JumpForce;
 	}
 
 	public bool IsSwinging()
@@ -165,7 +166,7 @@ public class Reinhardt : HeroBase {
 	}
 	
 	void Update () {
-
+		base.Update();
 		if(CanLandEarthshatter() && firstPersonController.IsGrounded())
 		{
 			hammer.animator.Play("EarthShatterComplete");
@@ -250,13 +251,12 @@ public class Reinhardt : HeroBase {
 
 		if(shield.IsActive() || charging)
 		{
-			firstPersonCam.enabled = false;
-			thirdPersonCam.enabled = true;
+			ToThirdPerson();
 			hammerObject.SetActive(false);
 			if (charging)
 				firstPersonController.movementSettings.JumpForce = 0;
 			else
-				firstPersonController.movementSettings.JumpForce = 75;
+				firstPersonController.movementSettings.JumpForce = unmodifiedJumpForce;
 			firstPersonController.movementSettings.ForwardSpeed = charging ? 0 : shieldingSpeed;
 			firstPersonController.movementSettings.BackwardSpeed = charging ? 0 : shieldingSpeed;
 			firstPersonController.movementSettings.StrafeSpeed = charging ? 0 : shieldingSpeed;
@@ -264,10 +264,9 @@ public class Reinhardt : HeroBase {
 		}
 		else
 		{
-			firstPersonCam.enabled = true;
-			thirdPersonCam.enabled = false;
+			ToFirstPerson();
 			hammerObject.SetActive(true);
-			firstPersonController.movementSettings.JumpForce = 75;
+			firstPersonController.movementSettings.JumpForce = unmodifiedJumpForce;
 			firstPersonController.movementSettings.ForwardSpeed = regularSpeed;
 			firstPersonController.movementSettings.BackwardSpeed = regularSpeed;
 			firstPersonController.movementSettings.StrafeSpeed = regularSpeed;

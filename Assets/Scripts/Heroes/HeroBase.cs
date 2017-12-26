@@ -9,7 +9,6 @@ public class HeroBase : MonoBehaviour {
 	public bool team;
 	private int maxAmmo, ammo;
 	private HeroInput input;
-	public new GameObject camera;
 	[HideInInspector]
 	public bool ai;
 
@@ -18,6 +17,40 @@ public class HeroBase : MonoBehaviour {
 	protected Rigidbody body;
 	public Material outlineMaterial;
 	public Material heroMaterial;
+
+	//View-controlling variables
+	public new Camera camera;
+	public Camera firstPersonCam, thirdPersonCam;
+	private Vector3 preLerpCamPos, thirdPersonCamPosition;
+	private Quaternion preLerpCamRot, thirdPersonCamRotation;
+	private float transitionPercentage;
+	private bool firstPerson;
+	private const float transitionTime = .2f;
+
+	public void ToFirstPerson()
+	{
+		if (!firstPerson)
+		{
+			transitionPercentage = 0;
+			preLerpCamPos = thirdPersonCam.transform.localPosition;
+			preLerpCamRot = thirdPersonCam.transform.localRotation;
+		}
+		firstPerson = true;
+	}
+
+	public void ToThirdPerson()
+	{
+		if (firstPerson)
+		{
+			transitionPercentage = 0;
+			preLerpCamPos = thirdPersonCam.transform.localPosition;
+			preLerpCamRot = thirdPersonCam.transform.localRotation;
+		}
+		firstPerson = false;
+		camera = thirdPersonCam;
+		firstPersonCam.enabled = false;
+		thirdPersonCam.enabled = true;
+	}
 
 	protected void SetMaxAmmo(int max)
 	{
@@ -62,6 +95,9 @@ public class HeroBase : MonoBehaviour {
 
 	public void Reset()
 	{
+		thirdPersonCamPosition = thirdPersonCam.transform.localPosition;
+		thirdPersonCamRotation = thirdPersonCam.transform.localRotation;
+		firstPerson = true;
 		gameObject.layer = LayerMask.NameToLayer(team ? "Team1" : "Team2");
 		foreach(MonoBehaviour c in GetComponents<MonoBehaviour>())
 		{
@@ -70,7 +106,7 @@ public class HeroBase : MonoBehaviour {
 		body = GetComponent<Rigidbody>();
 
 		HeroInput[] inputs = GetComponents<HeroInput>();
-		camera = GetComponentInChildren<Camera>().gameObject;
+		camera = firstPersonCam;
 		if(ai)
 		{
 			GetComponent<PlayerInput>().enabled = false;
@@ -102,6 +138,10 @@ public class HeroBase : MonoBehaviour {
 		}
 		else {
 			GetComponent<Renderer>().material = heroMaterial;
+
+			camera = firstPersonCam;
+			firstPersonCam.enabled = true;
+			thirdPersonCam.enabled = false;
 		}
 	}
 	
@@ -109,8 +149,30 @@ public class HeroBase : MonoBehaviour {
 		Reset();
 	}
 	
-	void Update () {
-		
+	public void Update () {
+		if(transitionPercentage < 1)
+			transitionPercentage += Time.deltaTime / transitionTime;
+		if(firstPerson)
+		{
+			thirdPersonCam.transform.localPosition = Vector3.Lerp(preLerpCamPos, firstPersonCam.transform.localPosition, transitionPercentage);
+			thirdPersonCam.transform.localRotation = Quaternion.Lerp(preLerpCamRot, firstPersonCam.transform.localRotation, transitionPercentage);
+		}
+		else
+		{
+			thirdPersonCam.transform.localPosition = Vector3.Lerp(preLerpCamPos, thirdPersonCamPosition, transitionPercentage);
+			thirdPersonCam.transform.localRotation = Quaternion.Lerp(preLerpCamRot, thirdPersonCamRotation, transitionPercentage);
+		}
+		if(transitionPercentage >= 1 && firstPerson)
+		{
+			camera = firstPersonCam;
+			firstPersonCam.enabled = true;
+			thirdPersonCam.enabled = false;
+		}
+		if(ai)
+		{
+			firstPersonCam.enabled = false;
+			thirdPersonCam.enabled = false;
+		}
 	}
 
 	public void FixedUpdate()

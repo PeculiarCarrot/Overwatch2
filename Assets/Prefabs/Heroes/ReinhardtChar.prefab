@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 114007370522199294}
   - component: {fileID: 124976806746646404}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: FirstPersonCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,7 +184,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1882147103177540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.53549, y: 3.232, z: -0.762}
+  m_LocalPosition: {x: -23.464182, y: 5.375, z: -7.005517}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4598512632788406}
@@ -229,13 +229,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1486969923184206}
-  m_LocalRotation: {x: 0.2318447, y: -0, z: -0, w: 0.9727528}
-  m_LocalPosition: {x: 0, y: 2.51, z: -3.25}
+  m_LocalRotation: {x: 0.03539426, y: -0, z: -0, w: 0.99937344}
+  m_LocalPosition: {x: 0, y: 1.574, z: -4.003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4008512960064278}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 26.811, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.057, y: 0, z: 0}
 --- !u!4 &4380870803764218
 Transform:
   m_ObjectHideFlags: 1
@@ -750,13 +750,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  camera: {fileID: 0}
   ai: 0
   outlineMaterial: {fileID: 2100000, guid: 415252035a3f687469c0b3df5e9a1b78, type: 2}
   heroMaterial: {fileID: 2100000, guid: fc5f3301dfaf32549945428f305f6e9c, type: 2}
-  firstPersonController: {fileID: 114748962101794832}
+  camera: {fileID: 0}
   firstPersonCam: {fileID: 20251100779080328}
   thirdPersonCam: {fileID: 20064628096770450}
+  firstPersonController: {fileID: 114748962101794832}
   shieldObject: {fileID: 1979590094896240}
   hammerObject: {fileID: 1290030533027810}
   firestrikePrefab: {fileID: 1383017675676130, guid: a4ded55a4eba60d48badc46be67a7031,

@@ -78,7 +78,7 @@ public class Tracer : HeroBase {
 	}
 	
 	void Update () {
-
+		base.Update();
 		if(blinkTimer < blinkTime && blinkCharges < maxBlinkCharges)
 		{
 			blinkTimer += Time.deltaTime;

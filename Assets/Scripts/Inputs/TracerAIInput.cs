@@ -120,7 +120,7 @@ public class TracerAIInput : AIInput {
 		for (int i = 0; i < path.corners.Length-1; i++)
 			Debug.DrawLine(path.corners[i], path.corners[i+1], Color.magenta);		
 
-		GameObject cam = hero.camera;
+		GameObject cam = hero.camera.gameObject;
 		//lookingAt = target.transform.position;
 		Vector3 relativePos = lookingAt - cam.transform.position;
 		Quaternion rotation = Quaternion.LookRotation(relativePos);
