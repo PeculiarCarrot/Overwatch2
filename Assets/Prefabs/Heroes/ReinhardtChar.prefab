@@ -115,7 +115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1882147103177540
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1979590094896240
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -184,12 +184,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1882147103177540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.464182, y: 5.375, z: -7.005517}
+  m_LocalPosition: {x: -2.3295515, y: 3.86, z: -9.959389}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4598512632788406}
   - {fileID: 4237356280261692}
-  - {fileID: 4380870803764218}
   - {fileID: 4523622806404030}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -243,11 +242,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1979590094896240}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 1.2059999}
+  m_LocalPosition: {x: 0, y: 0.20000017, z: 1.2059999}
   m_LocalScale: {x: 7.5864296, y: 3.5956283, z: 0.04522567}
   m_Children: []
-  m_Father: {fileID: 4008512960064278}
-  m_RootOrder: 2
+  m_Father: {fileID: 4598512632788406}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4523622806404030
 Transform:
@@ -260,7 +259,7 @@ Transform:
   m_LocalScale: {x: 1.2684138, y: 2.2263281, z: 1.1001723}
   m_Children: []
   m_Father: {fileID: 4008512960064278}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4598512632788406
 Transform:
@@ -273,6 +272,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4058425144712964}
+  - {fileID: 4380870803764218}
   m_Father: {fileID: 4008512960064278}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -283,7 +283,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1800508398490544}
   m_LocalRotation: {x: -0.30103272, y: 0.03608676, z: 0.12355781, w: 0.94488657}
-  m_LocalPosition: {x: -0.52, y: -0.86, z: -0.91}
+  m_LocalPosition: {x: -0.97, y: 0.76, z: -2.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4058425144712964}
@@ -796,7 +796,7 @@ MonoBehaviour:
     StrafeSpeed: 6
     RunMultiplier: 1
     RunKey: 304
-    JumpForce: 95
+    JumpForce: 90
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
@@ -876,7 +876,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 1.8672982
-  m_Height: 8.899476
+  m_Height: 11.08
   m_Direction: 1
   m_Center: {x: 2.4680634, y: 5.288198, z: 0.0000010492857}
 --- !u!136 &136896322764036790

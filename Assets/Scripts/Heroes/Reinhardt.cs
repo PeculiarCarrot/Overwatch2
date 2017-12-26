@@ -19,6 +19,7 @@ public class Reinhardt : HeroBase {
 	private float chargeTimer, chargeTime = 1f;
 	private float ultTimer, ultTime = 3f;
 	private float chargeSpeed = 15f, chargeDurationTimer, chargeDuration = 3.3f;
+	private float chargeTurnSpeed = 20f;
 	private float unmodifiedJumpForce;
 	private bool charging;
 
@@ -150,8 +151,6 @@ public class Reinhardt : HeroBase {
 	private void Charge()
 	{
 		shield.SetActive(false);
-		firstPersonCam.enabled = true;
-		thirdPersonCam.enabled = false;
 		charging = true;
 		chargeTimer = 0;
 		chargeStartupTimer = 0;
@@ -223,11 +222,10 @@ public class Reinhardt : HeroBase {
 			chargeDurationTimer += Time.deltaTime;
 			chargeStartupTimer += Time.deltaTime;
 
-			float turnSpeed = 16f;
 			if(GetInput().GetKey(KeyCode.A))
-				transform.Rotate(0, -turnSpeed * Time.deltaTime, 0);
+				transform.Rotate(0, -chargeTurnSpeed * Time.deltaTime, 0);
 			if(GetInput().GetKey(KeyCode.D))
-				transform.Rotate(0, turnSpeed * Time.deltaTime, 0);
+				transform.Rotate(0, chargeTurnSpeed * Time.deltaTime, 0);
 
 			if(chargeStartupTimer >= chargeStartupTime)
 			{
@@ -278,6 +276,26 @@ public class Reinhardt : HeroBase {
 			firstPersonCam.enabled = false;
 			thirdPersonCam.enabled = false;
 		}
+
+		if(shield.IsActive())
+		{
+			firstPersonController.mouseLook.MaximumX = 30;
+			firstPersonController.mouseLook.MinimumX = -89;
+
+			Vector3 rot = firstPersonCam.transform.rotation.eulerAngles;
+			if (rot.x > 108)
+				rot.x -= 360;
+			rot.x = Mathf.Clamp(rot.x, -89, 0);
+			firstPersonCam.transform.rotation = Quaternion.Euler(rot);
+		}
+		else
+		{
+			firstPersonController.mouseLook.MaximumX = 89;
+			firstPersonController.mouseLook.MinimumX = -89;
+		}
+	}
+		
+	void LateUpdate () {
 	}
 
 	public new void FixedUpdate()

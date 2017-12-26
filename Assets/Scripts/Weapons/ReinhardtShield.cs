@@ -27,15 +27,11 @@ public class ReinhardtShield : MonoBehaviour {
 	{
 		return active;
 	}
-
+	 
 	public void SetActive(bool active)
 	{
 		this.active = active;
 		renderer.enabled = active;
 		collider.enabled = active;
-	}
-	
-	void Update () {
-		
 	}
 }

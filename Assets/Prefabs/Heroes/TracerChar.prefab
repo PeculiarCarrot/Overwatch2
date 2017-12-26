@@ -733,12 +733,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  camera: {fileID: 0}
-  firstPersonCam: {fileID: 20548065508352228}
-  thirdPersonCam: {fileID: 20750314079364270}
   ai: 0
   outlineMaterial: {fileID: 2100000, guid: 415252035a3f687469c0b3df5e9a1b78, type: 2}
   heroMaterial: {fileID: 2100000, guid: a3d6e887b7e652c4bbaa4ab55437cfb4, type: 2}
+  camera: {fileID: 0}
+  firstPersonCam: {fileID: 20548065508352228}
+  thirdPersonCam: {fileID: 20750314079364270}
   firstPersonController: {fileID: 114659390254097500}
   crosshair: {fileID: 2800000, guid: da96f674d79a3f147821ba6f8db057c9, type: 3}
   pulseBombPrefab: {fileID: 1112806791652510, guid: 5cb0d22e3eec4be4baabcac9e7982d20,
@@ -800,7 +800,7 @@ MonoBehaviour:
     StrafeSpeed: 6
     RunMultiplier: 1
     RunKey: 304
-    JumpForce: 95
+    JumpForce: 90
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
