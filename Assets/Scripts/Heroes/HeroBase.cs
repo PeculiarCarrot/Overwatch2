@@ -133,7 +133,7 @@ public class HeroBase : MonoBehaviour {
 			Material[] theMaterials = new Material[2];
 			theMaterials[1] = heroMaterial;
 			theMaterials[0] = new Material(outlineMaterial);
-			theMaterials[0].SetColor("_OutlineColor", team ? Color.blue : Color.red);
+			theMaterials[0].SetColor("_OutlineColor", IsClientFriendly() ? Color.blue : Color.red);
 			GetComponent<Renderer>().materials = theMaterials;
 		}
 		else {
@@ -144,14 +144,35 @@ public class HeroBase : MonoBehaviour {
 			thirdPersonCam.enabled = false;
 		}
 	}
-	
+
+	public bool IsClientFriendly()
+	{
+		return team == ClientGraphics.ClientTeam;
+	}
+
 	public void Awake () {
 		Reset();
 	}
 	
 	public void Update () {
+
+		if(Application.isEditor && Input.GetKeyDown(KeyCode.Escape))
+		{
+			Debug.Break();
+		}
+
 		if(transitionPercentage < 1)
 			transitionPercentage += Time.deltaTime / transitionTime;
+
+
+		if(transitionPercentage >= 1 && firstPerson)
+		{
+			camera = firstPersonCam;
+			firstPersonCam.enabled = true;
+			thirdPersonCam.enabled = false;
+		}
+
+		//Lerp the camera to the third person position or into the first person position depending on which we have enabled
 		if(firstPerson)
 		{
 			thirdPersonCam.transform.localPosition = Vector3.Lerp(preLerpCamPos, firstPersonCam.transform.localPosition, transitionPercentage);
@@ -162,12 +183,7 @@ public class HeroBase : MonoBehaviour {
 			thirdPersonCam.transform.localPosition = Vector3.Lerp(preLerpCamPos, thirdPersonCamPosition, transitionPercentage);
 			thirdPersonCam.transform.localRotation = Quaternion.Lerp(preLerpCamRot, thirdPersonCamRotation, transitionPercentage);
 		}
-		if(transitionPercentage >= 1 && firstPerson)
-		{
-			camera = firstPersonCam;
-			firstPersonCam.enabled = true;
-			thirdPersonCam.enabled = false;
-		}
+
 		if(ai)
 		{
 			firstPersonCam.enabled = false;
